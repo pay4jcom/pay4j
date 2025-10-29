@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>pay4jcom</artifactId>
+        <groupId>com.pay4j</groupId>
+        <version>${revision}</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <modules>
+        <module>pay4j-demo</module>
+        <module>pay4j-generator</module>
+        <module>pay4j-job</module>
+        <module>pay4j-system</module>
+    </modules>
+
+    <artifactId>pay4j-modules</artifactId>
+    <packaging>pom</packaging>
+
+    <description>
+        pay4j-modules 业务模块
+    </description>
+
+</project>

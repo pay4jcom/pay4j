@@ -1,0 +1,3 @@
+com.pay4j.common.encrypt.config.EncryptorAutoConfiguration
+com.pay4j.common.encrypt.config.ApiDecryptAutoConfiguration
+

@@ -1,0 +1,7 @@
+{
+  "com.pay4j.common.ratelimiter.annotation.RateLimiter@key": {
+    "method": {
+      "parameters": true
+    }
+  }
+}

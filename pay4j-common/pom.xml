@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>pay4jcom</artifactId>
+        <groupId>com.pay4j</groupId>
+        <version>${revision}</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <modules>
+        <module>pay4j-common-bom</module>
+        <module>pay4j-common-social</module>
+        <module>pay4j-common-core</module>
+        <module>pay4j-common-doc</module>
+        <module>pay4j-common-excel</module>
+        <module>pay4j-common-idempotent</module>
+        <module>pay4j-common-job</module>
+        <module>pay4j-common-log</module>
+        <module>pay4j-common-mail</module>
+        <module>pay4j-common-mybatis</module>
+        <module>pay4j-common-oss</module>
+        <module>pay4j-common-ratelimiter</module>
+        <module>pay4j-common-redis</module>
+        <module>pay4j-common-satoken</module>
+        <module>pay4j-common-security</module>
+        <module>pay4j-common-sms</module>
+        <module>pay4j-common-web</module>
+        <module>pay4j-common-translation</module>
+        <module>pay4j-common-sensitive</module>
+        <module>pay4j-common-json</module>
+        <module>pay4j-common-encrypt</module>
+        <module>pay4j-common-tenant</module>
+        <module>pay4j-common-websocket</module>
+        <module>pay4j-common-sse</module>
+    </modules>
+
+    <artifactId>pay4j-common</artifactId>
+    <packaging>pom</packaging>
+
+    <description>
+        common 通用模块
+    </description>
+
+</project>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>com.pay4j</groupId>
+        <artifactId>pay4j-common</artifactId>
+        <version>${revision}</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>pay4j-common-log</artifactId>
+
+    <description>
+        pay4j-common-log 日志记录
+    </description>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>com.pay4j</groupId>
+            <artifactId>pay4j-common-satoken</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.pay4j</groupId>
+            <artifactId>pay4j-common-json</artifactId>
+        </dependency>
+
+    </dependencies>
+
+</project>

@@ -1,0 +1,5 @@
+com.pay4j.common.web.config.CaptchaConfig
+com.pay4j.common.web.config.FilterConfig
+com.pay4j.common.web.config.I18nConfig
+com.pay4j.common.web.config.ResourcesConfig
+com.pay4j.common.web.config.UndertowConfig

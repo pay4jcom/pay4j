@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>com.pay4j</groupId>
+        <artifactId>pay4j-modules</artifactId>
+        <version>${revision}</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>pay4j-system</artifactId>
+
+    <description>
+        system系统模块
+    </description>
+
+    <dependencies>
+        <!-- 通用工具-->
+        <dependency>
+            <groupId>com.pay4j</groupId>
+            <artifactId>pay4j-common-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.pay4j</groupId>
+            <artifactId>pay4j-common-doc</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.pay4j</groupId>
+            <artifactId>pay4j-common-mybatis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.pay4j</groupId>
+            <artifactId>pay4j-common-translation</artifactId>
+        </dependency>
+
+        <!-- OSS功能模块 -->
+        <dependency>
+            <groupId>com.pay4j</groupId>
+            <artifactId>pay4j-common-oss</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.pay4j</groupId>
+            <artifactId>pay4j-common-log</artifactId>
+        </dependency>
+
+        <!-- excel-->
+        <dependency>
+            <groupId>com.pay4j</groupId>
+            <artifactId>pay4j-common-excel</artifactId>
+        </dependency>
+
+        <!-- SMS功能模块 -->
+        <dependency>
+            <groupId>com.pay4j</groupId>
+            <artifactId>pay4j-common-sms</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.pay4j</groupId>
+            <artifactId>pay4j-common-tenant</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.pay4j</groupId>
+            <artifactId>pay4j-common-security</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.pay4j</groupId>
+            <artifactId>pay4j-common-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.pay4j</groupId>
+            <artifactId>pay4j-common-idempotent</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.pay4j</groupId>
+            <artifactId>pay4j-common-sensitive</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.pay4j</groupId>
+            <artifactId>pay4j-common-encrypt</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.pay4j</groupId>
+            <artifactId>pay4j-common-websocket</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.pay4j</groupId>
+            <artifactId>pay4j-common-sse</artifactId>
+        </dependency>
+
+    </dependencies>
+
+</project>

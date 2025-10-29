@@ -1,0 +1,2 @@
+com.pay4j.common.security.handler.AllUrlHandler
+com.pay4j.common.security.config.SecurityConfig
