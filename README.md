@@ -1,7 +1,7 @@
 - - -
 ## 系统简介
 
-[![码云Gitee](https://gitee.com/pay4j/pay4j)](https://gitee.com/pay4j/pay4j)
+[![码云Gitee](https://gitee.com/pay4j/pay4j/badge/star.svg?theme=blue)](https://gitee.com/pay4j/pay4j)
 [![GitHub](https://img.shields.io/github/stars/pay4jcom/pay4j?style=social&label=Stars)](https://github.com/pay4jcom/pay4j)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://gitee.com/dromara/pay4j-Vue-Plus/blob/5.X/LICENSE)
 [![使用IntelliJ IDEA开发维护](https://img.shields.io/badge/IntelliJ%20IDEA-提供支持-blue.svg)](https://www.jetbrains.com/?from=pay4j)
