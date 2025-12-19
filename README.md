@@ -17,11 +17,11 @@
 > 项目代码、文档 均开源免费可商用 遵循开源协议在项目中保留开源协议文件即可<br>
 活到老写到老 为兴趣而开源 为学习而开源 为让大家真正可以学到技术而开源
 
-> 系统演示: [传送门](https://doc.pay4j.com/#/common/demo_system)
+> 系统演示: [传送门](https://pay4j.com/#/common/demo_system)
 
 > 官方前端项目地址: [gitee](https://gitee.com/pay4j/pay4j-ui) - [github](https://github.com/pay4jcom/pay4j-ui) <br>
 
-> 文档地址: [pay4j-doc](https://doc.pay4j.com)
+> 文档地址: [pay4j-doc](https://pay4j.com)
 
 ## 赞助商
 
@@ -62,18 +62,18 @@
 
 使用框架前请仔细阅读文档重点注意事项
 <br>
->[初始化项目 必看](https://doc.pay4j.com/#/pay4j-vue-plus/quickstart/init)
->>[https://doc.pay4j.com/#/pay4j/quickstart/init](https://doc.pay4j.com/#/pay4j/quickstart/init)
+>[初始化项目 必看](https://pay4j.com/#/pay4j-vue-plus/quickstart/init)
+>>[https://pay4j.com/#/pay4j/quickstart/init](https://pay4j.com/#/pay4j/quickstart/init)
 >
 >
->[部署项目 必看](https://doc.pay4j.com/#/pay4j/quickstart/deploy)
->>[https://doc.pay4j.com/#/pay4j/quickstart/deploy](https://doc.pay4j.com/#/pay4j/quickstart/deploy)
+>[部署项目 必看](https://pay4j.com/#/pay4j/quickstart/deploy)
+>>[https://pay4j.com/#/pay4j/quickstart/deploy](https://pay4j.com/#/pay4j/quickstart/deploy)
 >
->[如何加群](https://doc.pay4j.com/#/common/add_group)
->>[https://doc.pay4j.com/#/common/add_group](https://doc.pay4j.com/#/common/add_group)
+>[如何加群](https://pay4j.com/#/common/add_group)
+>>[https://pay4j.com/#/common/add_group](https://pay4j.com/#/common/add_group)
 >
->[参考文档 Wiki](https://doc.pay4j.com)
->>[https://doc.pay4j.com](https://doc.pay4j.com)
+>[参考文档 Wiki](https://pay4j.com)
+>>[https://pay4j.com](https://pay4j.com)
 
 ## 软件架构图
 
@@ -81,7 +81,7 @@
 
 ## 如何参与贡献
 
-[参与贡献的方式 https://doc.pay4j.com/#/common/contribution](https://doc.pay4j.com/#/common/contribution)
+[参与贡献的方式 https://pay4j.com/#/common/contribution](https://pay4j.com/#/common/contribution)
 
 
 ## 演示图例
