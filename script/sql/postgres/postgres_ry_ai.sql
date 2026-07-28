@@ -11,7 +11,7 @@ CREATE OR REPLACE FUNCTION update_timestamp()
 RETURNS TRIGGER AS $$
 BEGIN
     NEW.update_dt = CURRENT_TIMESTAMP;
-    RETURN NEW;
+RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -19,7 +19,7 @@ CREATE OR REPLACE FUNCTION update_timestamp_updated()
 RETURNS TRIGGER AS $$
 BEGIN
     NEW.updated_dt = CURRENT_TIMESTAMP;
-    RETURN NEW;
+RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -27,7 +27,7 @@ CREATE OR REPLACE FUNCTION update_timestamp_updated_at()
 RETURNS TRIGGER AS $$
 BEGIN
     NEW.updated_at = CURRENT_TIMESTAMP;
-    RETURN NEW;
+RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -104,7 +104,7 @@ CREATE TABLE IF NOT EXISTS sai_model_provider
     updated_dt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT uk_provider_name UNIQUE (provider_name),
     CONSTRAINT uk_provider_key UNIQUE (provider_key)
-);
+    );
 
 COMMENT ON TABLE sai_model_provider IS 'AI模型提供商表';
 COMMENT ON COLUMN sai_model_provider.provider_name IS '提供商名称';
@@ -142,7 +142,7 @@ CREATE TABLE IF NOT EXISTS sai_model_config
     is_enabled BOOLEAN DEFAULT TRUE,
     created_dt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_dt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+    );
 
 COMMENT ON TABLE sai_model_config IS 'AI模型配置表';
 COMMENT ON COLUMN sai_model_config.provider_id IS '提供商ID';
@@ -191,7 +191,7 @@ CREATE TABLE IF NOT EXISTS sai_model_usage_stat
     created_dt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_dt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT unique_model_user UNIQUE (model_id, user_id)
-);
+    );
 
 COMMENT ON TABLE sai_model_usage_stat IS '模型使用统计表';
 COMMENT ON COLUMN sai_model_usage_stat.model_id IS '模型ID';
@@ -248,7 +248,7 @@ CREATE TABLE IF NOT EXISTS sai_agent
     app_id VARCHAR(128) NULL,
     create_dt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     update_dt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+    );
 
 COMMENT ON TABLE sai_agent IS '智能体表';
 COMMENT ON COLUMN sai_agent.name IS '智能体名称';
@@ -292,7 +292,7 @@ CREATE TABLE IF NOT EXISTS sai_agent_conversation
     create_dt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     update_dt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT uk_conv_id UNIQUE (conversation_id)
-);
+    );
 
 COMMENT ON TABLE sai_agent_conversation IS '智能体对话表';
 COMMENT ON COLUMN sai_agent_conversation.agent_id IS '智能体ID';
@@ -318,12 +318,13 @@ CREATE TABLE IF NOT EXISTS sai_agent_conversation_record
     role VARCHAR(16) DEFAULT 'user',
     content TEXT,
     thinking TEXT,
+    metadata TEXT DEFAULT NULL,
     status INT DEFAULT 1,
     input_tokens INT DEFAULT 0,
     output_tokens INT DEFAULT 0,
     cache_tokens INT DEFAULT 0,
     create_dt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+    );
 
 COMMENT ON TABLE sai_agent_conversation_record IS '智能体对话消息记录';
 COMMENT ON COLUMN sai_agent_conversation_record.agent_id IS '智能体ID';
@@ -332,6 +333,7 @@ COMMENT ON COLUMN sai_agent_conversation_record.user_id IS '用户ID';
 COMMENT ON COLUMN sai_agent_conversation_record.role IS 'user/assistant';
 COMMENT ON COLUMN sai_agent_conversation_record.content IS '消息内容';
 COMMENT ON COLUMN sai_agent_conversation_record.thinking IS '思考过程（仅assistant）';
+COMMENT ON COLUMN sai_agent_conversation_record.metadata IS '消息扩展元数据JSON';
 COMMENT ON COLUMN sai_agent_conversation_record.status IS '1=成功,2=失败,3=进行中';
 COMMENT ON COLUMN sai_agent_conversation_record.input_tokens IS '输入Token数（prompt）';
 COMMENT ON COLUMN sai_agent_conversation_record.output_tokens IS '输出Token数（completion）';
@@ -351,7 +353,7 @@ CREATE TABLE IF NOT EXISTS sai_agent_usage_stat
     create_dt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     update_dt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT uk_agent_user_date UNIQUE (agent_id, user_id, stat_date)
-);
+    );
 
 COMMENT ON TABLE sai_agent_usage_stat IS '智能体使用统计';
 COMMENT ON COLUMN sai_agent_usage_stat.agent_id IS '智能体ID';
@@ -376,7 +378,7 @@ CREATE TABLE IF NOT EXISTS sai_user_agent
     agent_id BIGINT NOT NULL,
     create_dt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT uk_user_agent UNIQUE (user_id, agent_id)
-);
+    );
 
 COMMENT ON TABLE sai_user_agent IS '用户订阅的智能体';
 COMMENT ON COLUMN sai_user_agent.user_id IS '用户ID';
@@ -438,6 +440,13 @@ CREATE TABLE sai_rag_document
     status SMALLINT DEFAULT 0,
     error_msg TEXT,
     chunk_count INT DEFAULT 0,
+    page_count INT DEFAULT 0,
+    element_count INT DEFAULT 0,
+    table_count INT DEFAULT 0,
+    image_count INT DEFAULT 0,
+    parse_time INT DEFAULT 0,
+    md_content TEXT DEFAULT NULL,
+    doc_metadata TEXT DEFAULT NULL,
     content_hash VARCHAR(64) DEFAULT NULL,
     resource_id BIGINT DEFAULT NULL,
     create_dt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -458,6 +467,39 @@ CREATE INDEX idx_rag_content_hash ON sai_rag_document (rag_id, content_hash);
 CREATE INDEX idx_rag_name ON sai_rag_document (rag_id, name);
 CREATE INDEX idx_rag_doc_resource ON sai_rag_document (resource_id);
 
+CREATE TABLE sai_rag_document_image
+(
+    id BIGSERIAL PRIMARY KEY,
+    rag_id BIGINT NOT NULL,
+    document_id BIGINT NOT NULL,
+    chunk_id BIGINT DEFAULT NULL,
+    resource_id BIGINT DEFAULT NULL,
+    image_index INT,
+    image_url VARCHAR(1024),
+    caption TEXT,
+    figure_no VARCHAR(64),
+    figure_title VARCHAR(512),
+    section_title VARCHAR(512),
+    source_page INT,
+    document_name VARCHAR(255),
+    ocr_text TEXT,
+    create_dt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    update_dt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+COMMENT ON TABLE sai_rag_document_image IS 'RAG document parsed image table';
+COMMENT ON COLUMN sai_rag_document_image.resource_id IS 'Linked resource id in sai_resource';
+
+CREATE TRIGGER trigger_sai_rag_document_image_update
+    BEFORE UPDATE ON sai_rag_document_image
+    FOR EACH ROW
+    EXECUTE FUNCTION update_timestamp();
+
+CREATE INDEX idx_rag_doc_image_rag ON sai_rag_document_image (rag_id);
+CREATE INDEX idx_rag_doc_image_document ON sai_rag_document_image (document_id);
+CREATE INDEX idx_rag_doc_image_chunk ON sai_rag_document_image (chunk_id);
+CREATE INDEX idx_rag_doc_image_resource ON sai_rag_document_image (resource_id);
+
 -- 4.3 RAG 分块表
 CREATE TABLE sai_rag_chunk
 (
@@ -470,11 +512,13 @@ CREATE TABLE sai_rag_chunk
     token_count INT,
     vector_id VARCHAR(128),
     content_hash VARCHAR(64) DEFAULT NULL,
+    source_type VARCHAR(20) NOT NULL DEFAULT 'TEXT',
     create_dt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     update_dt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 COMMENT ON COLUMN sai_rag_chunk.content_hash IS 'chunk内容SHA-256，用于向量去重';
+COMMENT ON COLUMN sai_rag_chunk.source_type IS 'chunk来源类型：TEXT文本、IMAGE图片';
 
 CREATE TRIGGER trigger_sai_rag_chunk_update
     BEFORE UPDATE ON sai_rag_chunk
@@ -484,6 +528,7 @@ CREATE TRIGGER trigger_sai_rag_chunk_update
 CREATE INDEX idx_rag_chunk_rag ON sai_rag_chunk (rag_id);
 CREATE INDEX idx_rag_chunk_document ON sai_rag_chunk (document_id);
 CREATE INDEX idx_chunk_rag_hash ON sai_rag_chunk (rag_id, content_hash);
+CREATE INDEX idx_chunk_rag_source_type ON sai_rag_chunk (rag_id, source_type);
 
 -- ============================================================
 -- 五、MCP 服务管理
@@ -501,16 +546,13 @@ CREATE TABLE IF NOT EXISTS sai_mcp_server
     command VARCHAR(1024),
     args TEXT,
     env_vars TEXT,
-    version VARCHAR(32) DEFAULT '1.0.0',
-    auth_type SMALLINT DEFAULT 0,
-    auth_config TEXT,
-    status SMALLINT DEFAULT 0,
-    capabilities TEXT,
+    timeout BIGINT DEFAULT 60000,
+    headers TEXT,
     last_connect_dt TIMESTAMP NULL,
     creator_id BIGINT,
     create_dt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     update_dt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+    );
 
 COMMENT ON TABLE sai_mcp_server IS 'MCP服务配置表';
 COMMENT ON COLUMN sai_mcp_server.name IS 'MCP服务名称';
@@ -521,11 +563,8 @@ COMMENT ON COLUMN sai_mcp_server.endpoint IS '端点路径(SSE/Streamable HTTP�
 COMMENT ON COLUMN sai_mcp_server.command IS 'Stdio命令(Stdio时必填)';
 COMMENT ON COLUMN sai_mcp_server.args IS 'Stdio命令参数(JSON数组)';
 COMMENT ON COLUMN sai_mcp_server.env_vars IS 'Stdio环境变量(JSON对象)';
-COMMENT ON COLUMN sai_mcp_server.version IS '版本';
-COMMENT ON COLUMN sai_mcp_server.auth_type IS '认证方式: 0-无需认证 1-API Key 2-OAuth 3-Basic Auth';
-COMMENT ON COLUMN sai_mcp_server.auth_config IS '认证配置(JSON)';
-COMMENT ON COLUMN sai_mcp_server.status IS '状态: 0-未连接 1-已连接 2-异常';
-COMMENT ON COLUMN sai_mcp_server.capabilities IS '能力列表(JSON数组)';
+COMMENT ON COLUMN sai_mcp_server.timeout IS '超时时间(毫秒)';
+COMMENT ON COLUMN sai_mcp_server.headers IS '请求头(JSON对象)';
 COMMENT ON COLUMN sai_mcp_server.last_connect_dt IS '最后连接时间';
 COMMENT ON COLUMN sai_mcp_server.creator_id IS '创建者用户ID';
 
@@ -535,7 +574,6 @@ CREATE TRIGGER trigger_sai_mcp_server_update
     EXECUTE FUNCTION update_timestamp();
 
 CREATE INDEX idx_mcp_server_creator ON sai_mcp_server (creator_id);
-CREATE INDEX idx_mcp_server_status ON sai_mcp_server (status);
 
 -- 5.2 智能体与MCP服务关联表（多对多）
 CREATE TABLE IF NOT EXISTS sai_agent_mcp_server
@@ -545,7 +583,7 @@ CREATE TABLE IF NOT EXISTS sai_agent_mcp_server
     mcp_server_id BIGINT NOT NULL,
     create_dt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT uk_agent_mcp UNIQUE (agent_id, mcp_server_id)
-);
+    );
 
 COMMENT ON TABLE sai_agent_mcp_server IS '智能体MCP服务关联表';
 COMMENT ON COLUMN sai_agent_mcp_server.agent_id IS '智能体ID';
@@ -574,7 +612,7 @@ CREATE TABLE IF NOT EXISTS sai_skill
     creator_id BIGINT,
     create_dt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     update_dt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+    );
 
 COMMENT ON TABLE sai_skill IS 'Skill技能包表';
 COMMENT ON COLUMN sai_skill.name IS 'Skill名称(从SKILL.md解析)';
@@ -607,7 +645,7 @@ CREATE TABLE IF NOT EXISTS sai_skill_file
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT uk_skill_path UNIQUE (skill_id, file_path)
-);
+    );
 
 COMMENT ON TABLE sai_skill_file IS 'Skill支撑文件内容表';
 COMMENT ON COLUMN sai_skill_file.skill_id IS 'Skill ID';
@@ -633,7 +671,7 @@ CREATE TABLE IF NOT EXISTS sai_agent_skill
     skill_id BIGINT NOT NULL,
     create_dt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT uk_agent_skill UNIQUE (agent_id, skill_id)
-);
+    );
 
 COMMENT ON TABLE sai_agent_skill IS '智能体Skill关联表';
 COMMENT ON COLUMN sai_agent_skill.agent_id IS '智能体ID';
@@ -659,7 +697,7 @@ CREATE TABLE IF NOT EXISTS sai_app
     create_dt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     update_dt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT uk_app_id UNIQUE (app_id)
-);
+    );
 
 COMMENT ON TABLE sai_app IS '客户端应用';
 COMMENT ON COLUMN sai_app.app_id IS '应用唯一标识';
@@ -690,7 +728,7 @@ CREATE TABLE IF NOT EXISTS sai_client_node
     create_dt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     update_dt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT uk_client_node UNIQUE (app_id, host_id)
-);
+    );
 
 COMMENT ON TABLE sai_client_node IS 'AI客户端实例节点';
 COMMENT ON COLUMN sai_client_node.app_id IS '所属应用ID';
@@ -726,7 +764,7 @@ CREATE TABLE IF NOT EXISTS sai_store_instance
     is_default BOOLEAN DEFAULT FALSE,
     create_dt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     update_dt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+    );
 
 COMMENT ON TABLE sai_store_instance IS '存储实例';
 COMMENT ON COLUMN sai_store_instance.name IS '实例名称';
@@ -760,7 +798,7 @@ CREATE TABLE IF NOT EXISTS sai_resource
     create_dt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     update_dt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT uk_storage_key UNIQUE (storage_key)
-);
+    );
 
 COMMENT ON TABLE sai_resource IS '通用资源存储';
 COMMENT ON COLUMN sai_resource.storage_key IS '存储键（相对路径或对象Key）';
@@ -787,7 +825,7 @@ CREATE INDEX idx_creator ON sai_resource (creator_id);
 
 -- 默认管理员：admin / admin123
 INSERT INTO sai_user VALUES (1, 2, NULL, 'admin', 'admin', '', 'pbkdf2$120000$c25haWwtYWktYWRtaW4tMQ==$kakglT/wYKOgv/77Ah1stie58d/JbY2nGgq5DwgUBw4=', NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-ON CONFLICT (id) DO NOTHING;
+    ON CONFLICT (id) DO NOTHING;
 
 SELECT setval(pg_get_serial_sequence('sai_user', 'id'), COALESCE((SELECT MAX(id) FROM sai_user), 1), TRUE);
 
@@ -800,24 +838,24 @@ VALUES ('OpenAI', 'openai', 'OpenAI官方模型 (GPT-4, GPT-3.5等)', TRUE),
        ('阿里云百炼', 'qwen', '阿里云百炼 OpenAI 兼容模型 (Qwen等)', TRUE),
        ('DeepSeek', 'deepseek', 'DeepSeek OpenAI 兼容模型', TRUE),
        ('智谱AI', 'zhipu', '智谱AI OpenAI 兼容模型 (GLM等)', TRUE)
-ON CONFLICT (provider_key) DO NOTHING;
+    ON CONFLICT (provider_key) DO NOTHING;
 
 INSERT INTO sai_model_config VALUES (1, 5, 'glm-5.1', 'glm-5.1', 'CHAT', 'openai-compatible', '', '', 'https://dashscope.aliyuncs.com/compatible-mode/v1', '{"frequencyPenalty":0.0,"maxTokens":20000,"presencePenalty":0.0,"stopSequences":[],"stream":true,"temperature":0.7,"timeoutMs":300000,"topK":1,"topP":1.0}', NULL, 'GLOBAL', TRUE, TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-ON CONFLICT (id) DO NOTHING;
+    ON CONFLICT (id) DO NOTHING;
 
 SELECT setval(pg_get_serial_sequence('sai_model_config', 'id'), COALESCE((SELECT MAX(id) FROM sai_model_config), 1), TRUE);
 
 INSERT INTO sai_agent VALUES (1, '智测先锋专家', '智测先锋专家是一款专注于软件测试与质量保障领域的智能助手。它能够高效生成覆盖全面的测试用例，深度分析Bug根因并提供修复建议，支持编写自动化测试脚本，以及解读复杂的测试报告。适用于软件开发周期的各个QA阶段，包括单元测试、接口测试、UI自动化及回归测试规划。其核心特点是逻辑严密、注重边界与异常场景，帮助团队大幅提升测试效率与软件质量。', NULL, '你是一位资深的软件测试与质量保障（QA）专家，名为“智测先锋专家”。\n\n【角色定位】你是开发团队的最后一道防线，致力于保障软件产品的卓越质量。\n\n【专业领域】精通黑盒与白盒测试、自动化测试框架（如Selenium、Pytest）、接口与性能测试、安全测试及CI/CD持续集成流程。\n\n【回答风格】逻辑严密、条理清晰、客观专业。善于使用结构化排版（如Markdown列表、代码块、表格）呈现测试用例和步骤，语言精炼，直击痛点。\n\n【行为指南】\n1. 生成测试用例：必须覆盖正常流、异常流、边界值和兼容性等方面，确保测试的全面性与无遗漏。\n2. 分析Bug根因：从代码逻辑、数据状态、环境配置等多维度推导，不仅给出修复建议，更要提供预防性的测试策略。\n3. 编写自动化脚本：确保代码规范、包含必要注释与断言（Assert），并明确说明运行依赖与环境配置。\n4. 需求澄清：若用户提问模糊，主动追问业务背景、技术栈等关键细节，拒绝给出宽泛且无实操价值的答案。\n5. 风险预警：始终秉持质量第一理念，在解答中适时提示潜在的测试盲区与质量风险。', '你好！我是智测先锋专家，你的专属软件测试与质量保障顾问。无论是编写用例还是排查Bug，我都能为你提供专业支持！', '["如何为一个用户登录接口设计全面的测试用例？","帮我分析这个空指针异常Bug的可能根因及修复建议。","请提供一段Python的Pytest接口自动化测试脚本示例。","怎样制定一个高效的回归测试策略？"]', 2, FALSE, FALSE, FALSE, FALSE, FALSE, NULL, 1, 20, 1, FALSE, 1, 1, NULL, '1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-ON CONFLICT (id) DO NOTHING;
+    ON CONFLICT (id) DO NOTHING;
 
 SELECT setval(pg_get_serial_sequence('sai_agent', 'id'), COALESCE((SELECT MAX(id) FROM sai_agent), 1), TRUE);
 
 INSERT INTO sai_app VALUES (1, '1', '测试', '', 'SAI_566a6bfbc26e4998b4841cc927d50c5d', 'LEAST_LOAD', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-ON CONFLICT (id) DO NOTHING;
+    ON CONFLICT (id) DO NOTHING;
 
 SELECT setval(pg_get_serial_sequence('sai_app', 'id'), COALESCE((SELECT MAX(id) FROM sai_app), 1), TRUE);
 
 INSERT INTO sai_openapi_user VALUES (1, '1', '46ed53c6a20044c7bbd870848e80f92f', 1, '1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-ON CONFLICT (id) DO NOTHING;
+    ON CONFLICT (id) DO NOTHING;
 
 SELECT setval(pg_get_serial_sequence('sai_openapi_user', 'id'), COALESCE((SELECT MAX(id) FROM sai_openapi_user), 1), TRUE);

@@ -1,0 +1,3 @@
+com.pay4j.common.push.config.MessageAutoConfiguration
+com.pay4j.common.push.config.MessageSseConfiguration
+com.pay4j.common.push.config.MessageWebSocketConfiguration

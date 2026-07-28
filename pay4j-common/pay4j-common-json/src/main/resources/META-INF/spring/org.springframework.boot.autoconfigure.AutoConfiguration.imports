@@ -1,0 +1,2 @@
+com.pay4j.common.json.config.JacksonConfig
+com.pay4j.common.json.config.JsonEnhancementConfig

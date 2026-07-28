@@ -1,0 +1,6 @@
+com.pay4j.common.translation.config.TranslationConfig
+com.pay4j.common.translation.core.impl.DeptNameTranslationImpl
+com.pay4j.common.translation.core.impl.DictTypeTranslationImpl
+com.pay4j.common.translation.core.impl.OssUrlTranslationImpl
+com.pay4j.common.translation.core.impl.UserNameTranslationImpl
+com.pay4j.common.translation.core.impl.NicknameTranslationImpl
