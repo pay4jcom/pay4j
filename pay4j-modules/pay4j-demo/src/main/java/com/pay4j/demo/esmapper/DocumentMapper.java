@@ -1,0 +1,12 @@
+package com.pay4j.demo.esmapper;
+
+import com.pay4j.demo.domain.Document;
+import org.dromara.easyes.core.kernel.BaseEsMapper;
+
+/**
+ * Easy-Es 文档 Mapper。
+ *
+ * @author Lion Li
+ */
+public interface DocumentMapper extends BaseEsMapper<Document> {
+}
