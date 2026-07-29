@@ -1,0 +1,573 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@plugin '@tailwindcss/typography';
+@plugin '@iconify/tailwind4';
+
+/* Dark mode uses .dark class selector, not prefers-color-scheme */
+@custom-variant dark (&:is(.dark *));
+
+/* Explicitly pin Tailwind v4 dynamic spacing for classes like w-150/h-55. */
+@theme {
+  --spacing: 0.25rem;
+}
+
+@theme inline {
+  /* Font */
+  --font-sans: var(--font-family);
+
+  /* Border Radius */
+  --radius-sm: var(--ant-border-radius-xs);
+  --radius-md: var(--ant-border-radius-sm);
+  --radius-lg: var(--ant-border-radius);
+  --radius-xl: var(--ant-border-radius-lg);
+
+  /* Box Shadow */
+  --shadow-float:
+    0 6px 16px 0 rgb(0 0 0 / 8%), 0 3px 6px -4px rgb(0 0 0 / 12%),
+    0 9px 28px 8px rgb(0 0 0 / 5%);
+
+  /* Animations */
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+  --animate-collapsible-down: collapsible-down 0.2s ease-in-out;
+  --animate-collapsible-up: collapsible-up 0.2s ease-in-out;
+  --animate-float: float 5s linear 0ms infinite;
+
+  /* ===== Semantic Colors (shadcn-ui) ===== */
+
+  --color-background: var(--ant-color-bg-base);
+  --color-background-deep: var(--ant-color-bg-layout);
+  --color-foreground: var(--ant-color-text);
+  --color-card: var(--ant-color-bg-container);
+  --color-card-foreground: var(--ant-color-text);
+  --color-popover: var(--ant-color-bg-elevated);
+  --color-popover-foreground: var(--ant-color-text);
+  --color-muted: var(--ant-color-fill-tertiary);
+  --color-muted-foreground: var(--ant-color-text-secondary);
+  --color-accent: var(--ant-color-fill-tertiary);
+  --color-accent-foreground: var(--ant-color-text);
+  --color-accent-hover: var(--ant-color-fill-secondary);
+  --color-accent-lighter: var(--ant-color-fill-quaternary);
+  --color-border: var(--ant-color-border);
+  --color-input: var(--ant-color-border);
+  --color-input-background: var(--ant-color-bg-container);
+  --color-ring: var(--ant-color-primary);
+  --color-secondary: var(--ant-color-fill-tertiary);
+  --color-secondary-desc: var(--ant-color-text-tertiary);
+  --color-secondary-foreground: var(--ant-color-text);
+
+  /* ===== Custom Semantic Colors ===== */
+
+  --color-header: var(--ant-color-bg-container);
+  --color-heavy: hsl(var(--heavy));
+  --color-heavy-foreground: hsl(var(--heavy-foreground));
+  --color-main: hsl(var(--main));
+  --color-overlay: var(--ant-color-bg-mask);
+  --color-overlay-content: hsl(var(--overlay-content));
+  --color-sidebar: var(--ant-color-bg-container);
+  --color-sidebar-deep: var(--ant-color-bg-layout);
+
+  /* ===== Primary Palette ===== */
+
+  --color-primary: var(--ant-color-primary);
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-primary-50: var(--ant-color-primary-bg);
+  --color-primary-100: var(--ant-color-primary-bg-hover);
+  --color-primary-200: var(--ant-color-primary-border);
+  --color-primary-300: var(--ant-color-primary-border-hover);
+  --color-primary-400: var(--ant-color-primary-hover);
+  --color-primary-500: var(--ant-color-primary);
+  --color-primary-600: var(--ant-color-primary-hover);
+  --color-primary-700: var(--ant-color-primary-active);
+  --color-primary-active: var(--ant-color-primary-active);
+  --color-primary-background-light: var(--ant-color-primary-border);
+  --color-primary-background-lighter: var(--ant-color-primary-bg-hover);
+  --color-primary-background-lightest: var(--ant-color-primary-bg);
+  --color-primary-border: var(--ant-color-primary-border);
+  --color-primary-border-light: var(--ant-color-primary-border-hover);
+  --color-primary-hover: var(--ant-color-primary-hover);
+  --color-primary-text: var(--ant-color-primary-text);
+  --color-primary-text-active: var(--ant-color-primary-text-active);
+  --color-primary-text-hover: var(--ant-color-primary-text-hover);
+
+  /* ===== Destructive Palette ===== */
+
+  --color-destructive: var(--ant-color-error);
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-destructive-50: var(--ant-color-error-bg);
+  --color-destructive-100: var(--ant-color-error-bg-hover);
+  --color-destructive-200: var(--ant-color-error-border);
+  --color-destructive-300: var(--ant-color-error-border-hover);
+  --color-destructive-400: var(--ant-color-error-hover);
+  --color-destructive-500: var(--ant-color-error);
+  --color-destructive-600: var(--ant-color-error-hover);
+  --color-destructive-700: var(--ant-color-error-active);
+  --color-destructive-active: var(--ant-color-error-active);
+  --color-destructive-background-light: var(--ant-color-error-border);
+  --color-destructive-background-lighter: var(--ant-color-error-bg-hover);
+  --color-destructive-background-lightest: var(--ant-color-error-bg);
+  --color-destructive-border: var(--ant-color-error-border);
+  --color-destructive-border-light: var(--ant-color-error-border-hover);
+  --color-destructive-hover: var(--ant-color-error-hover);
+  --color-destructive-text: var(--ant-color-error-text);
+  --color-destructive-text-active: var(--ant-color-error-active);
+  --color-destructive-text-hover: var(--ant-color-error-hover);
+
+  /* ===== Success Palette ===== */
+
+  --color-success: var(--ant-color-success);
+  --color-success-foreground: hsl(var(--success-foreground));
+  --color-success-50: var(--ant-color-success-bg);
+  --color-success-100: var(--ant-color-success-bg-hover);
+  --color-success-200: var(--ant-color-success-border);
+  --color-success-300: var(--ant-color-success-border-hover);
+  --color-success-400: var(--ant-color-success-hover);
+  --color-success-500: var(--ant-color-success);
+  --color-success-600: var(--ant-color-success-hover);
+  --color-success-700: var(--ant-color-success-active);
+  --color-success-active: var(--ant-color-success-active);
+  --color-success-background-light: var(--ant-color-success-border);
+  --color-success-background-lighter: var(--ant-color-success-bg-hover);
+  --color-success-background-lightest: var(--ant-color-success-bg);
+  --color-success-border: var(--ant-color-success-border);
+  --color-success-border-light: var(--ant-color-success-border-hover);
+  --color-success-hover: var(--ant-color-success-hover);
+  --color-success-text: var(--ant-color-success-text);
+  --color-success-text-active: var(--ant-color-success-active);
+  --color-success-text-hover: var(--ant-color-success-hover);
+
+  /* ===== Warning Palette ===== */
+
+  --color-warning: var(--ant-color-warning);
+  --color-warning-foreground: hsl(var(--warning-foreground));
+  --color-warning-50: var(--ant-color-warning-bg);
+  --color-warning-100: var(--ant-color-warning-bg-hover);
+  --color-warning-200: var(--ant-color-warning-border);
+  --color-warning-300: var(--ant-color-warning-border-hover);
+  --color-warning-400: var(--ant-color-warning-hover);
+  --color-warning-500: var(--ant-color-warning);
+  --color-warning-600: var(--ant-color-warning-hover);
+  --color-warning-700: var(--ant-color-warning-active);
+  --color-warning-active: var(--ant-color-warning-active);
+  --color-warning-background-light: var(--ant-color-warning-border);
+  --color-warning-background-lighter: var(--ant-color-warning-bg-hover);
+  --color-warning-background-lightest: var(--ant-color-warning-bg);
+  --color-warning-border: var(--ant-color-warning-border);
+  --color-warning-border-light: var(--ant-color-warning-border-hover);
+  --color-warning-hover: var(--ant-color-warning-hover);
+  --color-warning-text: var(--ant-color-warning-text);
+  --color-warning-text-active: var(--ant-color-warning-active);
+  --color-warning-text-hover: var(--ant-color-warning-hover);
+
+  /* ===== Green Palette (alias for success shades) ===== */
+
+  --color-green-50: var(--ant-color-success-bg);
+  --color-green-100: var(--ant-color-success-bg-hover);
+  --color-green-200: var(--ant-color-success-border);
+  --color-green-300: var(--ant-color-success-border-hover);
+  --color-green-400: var(--ant-color-success-hover);
+  --color-green-500: var(--ant-color-success);
+  --color-green-600: var(--ant-color-success-hover);
+  --color-green-700: var(--ant-color-success-active);
+  --color-green-active: var(--ant-color-success-active);
+  --color-green-background-light: var(--ant-color-success-border);
+  --color-green-background-lighter: var(--ant-color-success-bg-hover);
+  --color-green-background-lightest: var(--ant-color-success-bg);
+  --color-green-border: var(--ant-color-success-border);
+  --color-green-border-light: var(--ant-color-success-border-hover);
+  --color-green-foreground: hsl(var(--success-foreground));
+  --color-green-hover: var(--ant-color-success-hover);
+  --color-green-text: var(--ant-color-success-text);
+  --color-green-text-active: var(--ant-color-success-active);
+  --color-green-text-hover: var(--ant-color-success-hover);
+
+  /* ===== Red Palette (alias for destructive shades) ===== */
+
+  --color-red-50: var(--ant-color-error-bg);
+  --color-red-100: var(--ant-color-error-bg-hover);
+  --color-red-200: var(--ant-color-error-border);
+  --color-red-300: var(--ant-color-error-border-hover);
+  --color-red-400: var(--ant-color-error-hover);
+  --color-red-500: var(--ant-color-error);
+  --color-red-600: var(--ant-color-error-hover);
+  --color-red-700: var(--ant-color-error-active);
+  --color-red-active: var(--ant-color-error-active);
+  --color-red-background-light: var(--ant-color-error-border);
+  --color-red-background-lighter: var(--ant-color-error-bg-hover);
+  --color-red-background-lightest: var(--ant-color-error-bg);
+  --color-red-border: var(--ant-color-error-border);
+  --color-red-border-light: var(--ant-color-error-border-hover);
+  --color-red-foreground: hsl(var(--destructive-foreground));
+  --color-red-hover: var(--ant-color-error-hover);
+  --color-red-text: var(--ant-color-error-text);
+  --color-red-text-active: var(--ant-color-error-active);
+  --color-red-text-hover: var(--ant-color-error-hover);
+
+  /* ===== Yellow Palette (alias for warning shades) ===== */
+
+  --color-yellow-50: var(--ant-color-warning-bg);
+  --color-yellow-100: var(--ant-color-warning-bg-hover);
+  --color-yellow-200: var(--ant-color-warning-border);
+  --color-yellow-300: var(--ant-color-warning-border-hover);
+  --color-yellow-400: var(--ant-color-warning-hover);
+  --color-yellow-500: var(--ant-color-warning);
+  --color-yellow-600: var(--ant-color-warning-hover);
+  --color-yellow-700: var(--ant-color-warning-active);
+  --color-yellow-active: var(--ant-color-warning-active);
+  --color-yellow-background-light: var(--ant-color-warning-border);
+  --color-yellow-background-lighter: var(--ant-color-warning-bg-hover);
+  --color-yellow-background-lightest: var(--ant-color-warning-bg);
+  --color-yellow-border: var(--ant-color-warning-border);
+  --color-yellow-border-light: var(--ant-color-warning-border-hover);
+  --color-yellow-foreground: hsl(var(--warning-foreground));
+  --color-yellow-hover: var(--ant-color-warning-hover);
+  --color-yellow-text: var(--ant-color-warning-text);
+  --color-yellow-text-active: var(--ant-color-warning-active);
+  --color-yellow-text-hover: var(--ant-color-warning-hover);
+}
+
+/* Keyframes */
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+
+  to {
+    height: var(--reka-accordion-content-height);
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--reka-accordion-content-height);
+  }
+
+  to {
+    height: 0;
+  }
+}
+
+@keyframes collapsible-down {
+  from {
+    height: 0;
+  }
+
+  to {
+    height: var(--reka-collapsible-content-height);
+  }
+}
+
+@keyframes collapsible-up {
+  from {
+    height: var(--reka-collapsible-content-height);
+  }
+
+  to {
+    height: 0;
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-20px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* Base styles */
+@layer base {
+  *,
+  ::after,
+  ::before {
+    @apply border-border outline-ring/50;
+
+    box-sizing: border-box;
+    border-style: solid;
+    border-width: 0;
+  }
+
+  html {
+    @apply text-foreground bg-background font-sans;
+
+    scroll-behavior: smooth;
+    font-size: var(--font-size-base, 16px);
+    font-variation-settings: normal;
+    font-synthesis-weight: none;
+    line-height: 1.15;
+    text-rendering: optimizelegibility;
+    text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  #app,
+  body,
+  html {
+    @apply size-full;
+  }
+
+  body {
+    min-height: 100vh;
+  }
+
+  a,
+  a:active,
+  a:hover,
+  a:link,
+  a:visited {
+    @apply no-underline;
+  }
+
+  ::view-transition-new(root),
+  ::view-transition-old(root) {
+    @apply animate-none mix-blend-normal;
+  }
+
+  ::view-transition-old(root) {
+    @apply z-1;
+  }
+
+  ::view-transition-new(root) {
+    @apply z-2147483646;
+  }
+
+  html.dark::view-transition-old(root) {
+    @apply z-2147483646;
+  }
+
+  html.dark::view-transition-new(root) {
+    @apply z-1;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    @apply opacity-100;
+  }
+
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    @apply m-0 appearance-none;
+  }
+
+  /* Only adjust scrollbar for non-macOS */
+  html:not([data-platform='macOs']) {
+    ::-webkit-scrollbar {
+      @apply h-2.5 w-2.5;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      @apply bg-border rounded-sm border-none;
+    }
+
+    ::-webkit-scrollbar-track {
+      @apply rounded-sm border-none bg-transparent shadow-none;
+    }
+
+    ::-webkit-scrollbar-button {
+      @apply hidden;
+    }
+  }
+
+  /* Tailwind v4 Preflight 不再为 button 默认设置 pointer；见官方升级说明：
+   * https://tailwindcss.com/docs/upgrade-guide#buttons-use-the-default-cursor */
+  button:not(:disabled),
+  [role='button']:not(:disabled) {
+    @apply cursor-pointer;
+  }
+}
+
+/* Custom utilities (v4 @utility syntax) */
+@utility flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@utility flex-col-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Tailwind v4 的 utilities 在 @layer 内；组件样式若留在 layer 外，会按层叠规则压过 py-4 等工具类。
+ * 见：https://tailwindcss.com/docs/adding-custom-styles#using-css-and-layering */
+@layer components {
+  .outline-box {
+    @apply outline-border relative cursor-pointer rounded-md p-1 outline-1;
+  }
+
+  .outline-box::after {
+    @apply absolute top-1/2 left-1/2 z-20 h-0 w-px rounded-sm opacity-0 outline-2 outline-transparent transition-all duration-300 content-[""];
+  }
+
+  .outline-box.outline-box-active {
+    @apply outline-primary outline-2;
+  }
+
+  .outline-box.outline-box-active::after {
+    display: none;
+  }
+
+  .outline-box:not(.outline-box-active):hover::after {
+    @apply outline-primary top-0 left-0 h-full w-full p-1 opacity-100;
+  }
+
+  .vben-link {
+    @apply text-primary hover:text-primary-hover active:text-primary-active cursor-pointer;
+  }
+
+  .card-box {
+    @apply bg-card text-card-foreground border-border rounded-xl border;
+  }
+}
+
+/* Enter animations (converted from enterAnimationPlugin) */
+@keyframes enter-x-animation {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes enter-y-animation {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.enter-x:nth-child(1) {
+  opacity: 0;
+  transform: translateX(50px);
+  animation: enter-x-animation 0.3s ease-in-out 0.1s forwards;
+}
+
+.enter-x:nth-child(2) {
+  opacity: 0;
+  transform: translateX(50px);
+  animation: enter-x-animation 0.3s ease-in-out 0.2s forwards;
+}
+
+.enter-x:nth-child(3) {
+  opacity: 0;
+  transform: translateX(50px);
+  animation: enter-x-animation 0.3s ease-in-out 0.3s forwards;
+}
+
+.enter-x:nth-child(4) {
+  opacity: 0;
+  transform: translateX(50px);
+  animation: enter-x-animation 0.3s ease-in-out 0.4s forwards;
+}
+
+.enter-x:nth-child(5) {
+  opacity: 0;
+  transform: translateX(50px);
+  animation: enter-x-animation 0.3s ease-in-out 0.5s forwards;
+}
+
+.enter-y:nth-child(1) {
+  opacity: 0;
+  transform: translateY(50px);
+  animation: enter-y-animation 0.3s ease-in-out 0.1s forwards;
+}
+
+.enter-y:nth-child(2) {
+  opacity: 0;
+  transform: translateY(50px);
+  animation: enter-y-animation 0.3s ease-in-out 0.2s forwards;
+}
+
+.enter-y:nth-child(3) {
+  opacity: 0;
+  transform: translateY(50px);
+  animation: enter-y-animation 0.3s ease-in-out 0.3s forwards;
+}
+
+.enter-y:nth-child(4) {
+  opacity: 0;
+  transform: translateY(50px);
+  animation: enter-y-animation 0.3s ease-in-out 0.4s forwards;
+}
+
+.enter-y:nth-child(5) {
+  opacity: 0;
+  transform: translateY(50px);
+  animation: enter-y-animation 0.3s ease-in-out 0.5s forwards;
+}
+
+.-enter-x:nth-child(1) {
+  opacity: 0;
+  transform: translateX(-50px);
+  animation: enter-x-animation 0.3s ease-in-out 0.1s forwards;
+}
+
+.-enter-x:nth-child(2) {
+  opacity: 0;
+  transform: translateX(-50px);
+  animation: enter-x-animation 0.3s ease-in-out 0.2s forwards;
+}
+
+.-enter-x:nth-child(3) {
+  opacity: 0;
+  transform: translateX(-50px);
+  animation: enter-x-animation 0.3s ease-in-out 0.3s forwards;
+}
+
+.-enter-x:nth-child(4) {
+  opacity: 0;
+  transform: translateX(-50px);
+  animation: enter-x-animation 0.3s ease-in-out 0.4s forwards;
+}
+
+.-enter-x:nth-child(5) {
+  opacity: 0;
+  transform: translateX(-50px);
+  animation: enter-x-animation 0.3s ease-in-out 0.5s forwards;
+}
+
+.-enter-y:nth-child(1) {
+  opacity: 0;
+  transform: translateY(-50px);
+  animation: enter-y-animation 0.3s ease-in-out 0.1s forwards;
+}
+
+.-enter-y:nth-child(2) {
+  opacity: 0;
+  transform: translateY(-50px);
+  animation: enter-y-animation 0.3s ease-in-out 0.2s forwards;
+}
+
+.-enter-y:nth-child(3) {
+  opacity: 0;
+  transform: translateY(-50px);
+  animation: enter-y-animation 0.3s ease-in-out 0.3s forwards;
+}
+
+.-enter-y:nth-child(4) {
+  opacity: 0;
+  transform: translateY(-50px);
+  animation: enter-y-animation 0.3s ease-in-out 0.4s forwards;
+}
+
+.-enter-y:nth-child(5) {
+  opacity: 0;
+  transform: translateY(-50px);
+  animation: enter-y-animation 0.3s ease-in-out 0.5s forwards;
+}
+
+html.invert-mode {
+  @apply invert;
+}
+
+html.grayscale-mode {
+  @apply grayscale;
+}

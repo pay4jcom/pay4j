@@ -1,0 +1,111 @@
+<script setup lang="ts">
+import type { TabsEmits, TabsProps } from './types';
+
+import { VbenScrollbar } from '@/core/ui/adapter';
+import { ChevronsLeft, ChevronsRight } from '@/icons';
+
+import { Tabs, TabsChrome } from './components';
+import { useTabsDrag } from './use-tabs-drag';
+import { useTabsViewScroll } from './use-tabs-view-scroll';
+
+interface Props extends TabsProps {}
+
+defineOptions({
+  name: 'TabsView',
+});
+
+const props = withDefaults(defineProps<Props>(), {
+  contentClass: 'vben-tabs-content',
+  draggable: true,
+  styleType: 'chrome',
+  wheelable: true,
+});
+
+const emit = defineEmits<TabsEmits>();
+
+const {
+  handleScrollAt,
+  handleWheel,
+  // @ts-expect-error unused
+  scrollbarRef,
+  scrollDirection,
+  scrollIsAtLeft,
+  scrollIsAtRight,
+  showScrollButton,
+} = useTabsViewScroll(props);
+
+function onWheel(e: WheelEvent) {
+  if (props.wheelable) {
+    handleWheel(e);
+    e.stopPropagation();
+    e.preventDefault();
+  }
+}
+
+useTabsDrag(props, emit);
+</script>
+
+<template>
+  <div class="flex h-full flex-1 overflow-hidden">
+    <!-- 左侧滚动按钮 -->
+    <span
+      v-show="showScrollButton"
+      :class="{
+        'text-muted-foreground hover:bg-muted cursor-pointer': !scrollIsAtLeft,
+        'pointer-events-none opacity-30': scrollIsAtLeft,
+      }"
+      class="border-r px-2"
+      @click="scrollDirection('left')"
+    >
+      <ChevronsLeft class="size-4 h-full" />
+    </span>
+
+    <div
+      :class="{
+        'pt-0.75': styleType === 'chrome',
+      }"
+      class="size-full flex-1 overflow-hidden"
+    >
+      <VbenScrollbar
+        ref="scrollbarRef"
+        :shadow-bottom="false"
+        :shadow-top="false"
+        class="h-full"
+        horizontal
+        scroll-bar-class="z-10 hidden "
+        shadow
+        shadow-left
+        shadow-right
+        @scroll-at="handleScrollAt"
+        @wheel="onWheel"
+      >
+        <TabsChrome
+          v-if="styleType === 'chrome'"
+          v-bind="{ ...$attrs, ...$props }"
+          @close="emit('close', $event)"
+          @unpin="emit('unpin', $event)"
+        />
+
+        <Tabs
+          v-else
+          v-bind="{ ...$attrs, ...$props }"
+          @close="emit('close', $event)"
+          @unpin="emit('unpin', $event)"
+        />
+      </VbenScrollbar>
+    </div>
+
+    <!-- 右侧滚动按钮 -->
+    <span
+      v-show="showScrollButton"
+      :class="{
+        'text-muted-foreground hover:bg-muted cursor-pointer': !scrollIsAtRight,
+        'pointer-events-none opacity-30': scrollIsAtRight,
+      }"
+      class="text-muted-foreground hover:bg-muted cursor-pointer border-l px-2"
+      @click="scrollDirection('right')"
+    >
+      <ChevronsRight class="size-4 h-full" />
+    </span>
+  </div>
+</template>

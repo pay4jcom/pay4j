@@ -1,0 +1,80 @@
+import type { VxeGridProps } from 'vxe-table';
+
+import { renderBrowserIcon, renderOsIcon } from '@/utils/render';
+import dayjs from 'dayjs';
+
+export const columns: VxeGridProps['columns'] = [
+  {
+    title: '登录平台',
+    field: 'deviceType',
+  },
+  {
+    title: '登录账号',
+    field: 'userName',
+  },
+  {
+    title: '部门名称',
+    field: 'deptName',
+  },
+  {
+    title: 'IP地址',
+    field: 'ipaddr',
+  },
+  {
+    title: '登录地址',
+    field: 'loginLocation',
+  },
+  {
+    title: '浏览器',
+    field: 'browser',
+    slots: {
+      default: ({ row }) => {
+        return (
+          <div class="flex items-center justify-center gap-[6px]">
+            {renderBrowserIcon(row.browser, 'shrink-0')}
+            {row.browser}
+          </div>
+        );
+      },
+    },
+  },
+  {
+    title: '系统',
+    field: 'os',
+    slots: {
+      default: ({ row }) => {
+        /**
+         *  Windows 10 or Windows Server 2016 太长了 分割一下 详情依旧能看到详细的
+         */
+        let value = row.os;
+        if (value) {
+          const split = value.split(' or ');
+          if (split.length === 2) {
+            value = split[0];
+          }
+        }
+        return (
+          <div class="flex items-center justify-center gap-[6px]">
+            {renderOsIcon(row.os, 'shrink-0')}
+            {value}
+          </div>
+        );
+      },
+    },
+  },
+  {
+    title: '登录时间',
+    field: 'loginTime',
+    formatter: ({ cellValue }) => {
+      return dayjs(cellValue).format('YYYY-MM-DD HH:mm:ss');
+    },
+  },
+  {
+    field: 'action',
+    fixed: 'right',
+    slots: { default: 'action' },
+    title: '操作',
+    resizable: false,
+    width: 'auto',
+  },
+];

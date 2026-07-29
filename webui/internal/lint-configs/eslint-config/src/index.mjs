@@ -1,0 +1,40 @@
+import prettierConfig from 'eslint-config-prettier';
+
+import {
+  custom,
+  ignores,
+  imports,
+  javascript,
+  jsonc,
+  node,
+  perfectionist,
+  pnpm,
+  typescript,
+  vue,
+  yaml,
+} from './configs/index.mjs';
+
+async function defineConfig(config = []) {
+  const configs = [
+    vue(),
+    javascript(),
+    imports(),
+    ignores(),
+    typescript(),
+    jsonc(),
+    node(),
+    perfectionist(),
+    yaml(),
+    pnpm(),
+    custom(),
+    ...config,
+    // 关闭与 prettier 冲突的格式化规则,必须放在最后
+    prettierConfig,
+  ];
+
+  const resolved = await Promise.all(configs);
+
+  return resolved.flat();
+}
+
+export { defineConfig };

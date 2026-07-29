@@ -1,0 +1,193 @@
+.dark {
+  /* Default background color of <body />...etc */
+  --background: 222.34deg 10.43% 12.27%;
+
+  /* 主体区域背景色 */
+  --background-deep: 220deg 13.06% 9%;
+  --foreground: 0 0% 95%;
+
+  /* Background color for <Card /> */
+  --card: 222.34deg 10.43% 12.27%;
+
+  /* --card: 222.2 84% 4.9%; */
+  --card-foreground: 210 40% 98%;
+
+  /* Background color for popovers such as <DropdownMenu />, <HoverCard />, <Popover /> */
+
+  /* --popover: 222.82deg 8.43% 12.27%; */
+
+  /* 弹出层的背景色与主题区域背景色太过接近  */
+  --popover: 0 0% 14.2%;
+  --popover-foreground: 210 40% 98%;
+
+  /* Muted backgrounds such as <TabsList />, <Skeleton /> and <Switch /> */
+
+  /* --muted: 220deg 6.82% 17.25%; */
+
+  /* --muted-foreground: 215 20.2% 65.1%; */
+
+  --muted: 240 3.7% 15.9%;
+  --muted-foreground: 240 5% 64.9%;
+
+  /* 主题颜色 */
+
+  /* --primary: 245 82% 67%; */
+  --primary-foreground: 0 0% 98%;
+
+  /* Used for destructive actions such as <Button variant="destructive"> */
+
+  --destructive: 359.21 68.47% 56.47%;
+  --destructive-foreground: 0 0% 98%;
+
+  /* Used for success actions such as <message> */
+
+  --info: 180, 1.54%, 12.75%;
+  --info-foreground: 220, 4%, 58%;
+
+  /* Used for success actions such as <message> */
+
+  --success: 144 57% 58%;
+  --success-foreground: 0 0% 98%;
+
+  /* Used for warning actions such as <message> */
+
+  --warning: 42 84% 61%;
+  --warning-foreground: 0 0% 98%;
+
+  /* 颜色次要 */
+  --secondary: 240 5% 17%;
+  --secondary-foreground: 0 0% 98%;
+
+  /* Used for accents such as hover effects on <DropdownMenuItem>, <SelectItem>...etc */
+  --accent: 216 5% 19%;
+  --accent-dark: 240 0% 22%;
+  --accent-darker: 240 0% 26%;
+  --accent-lighter: 216 5% 12%;
+  --accent-hover: 216 5% 24%;
+  --accent-foreground: 0 0% 98%;
+
+  /* Darker color */
+  --heavy: 216 5% 24%;
+  --heavy-foreground: var(--accent-foreground);
+
+  /* Default border color */
+  --border: 240 3.7% 22%;
+
+  /* Border color for inputs such as <Input />, <Select />, <Textarea /> */
+  --input: 0deg 0% 100% / 10%;
+  --input-placeholder: 218deg 11% 65%;
+  --input-background: 0deg 0% 100% / 5%;
+
+  /* Used for focus ring */
+  --ring: 222.2 84% 4.9%;
+
+  /* ============= Custom ============= */
+
+  /* 遮罩颜色 */
+  --overlay: 0deg 0% 0% / 40%;
+  --overlay-content: 0deg 0% 0% / 40%;
+
+  /* 基本文字大小 */
+  --font-size-base: 16px;
+
+  /* =============component & UI============= */
+
+  --sidebar: 222.34deg 10.43% 12.27%;
+  --sidebar-deep: 220deg 13.06% 9%;
+  --menu: var(--sidebar);
+
+  /* header */
+  --header: 222.34deg 10.43% 12.27%;
+
+  color-scheme: dark;
+}
+
+/* 夜间模式下 header / tab 统一使用自定义 header 色。
+ * theme.css 中 --color-header 映射为 --ant-color-bg-container（antd 中性深灰），
+ * 与自定义蓝灰色调(--header)不一致；tabbar 本身也不挂 .dark 类，无法走下方
+ * html.dark .dark 的变量桥接。这里直接钉死 bg-header，保证与 header 同色。 */
+.dark .bg-header {
+  background-color: var(--ant-color-bg-container);
+}
+
+/* ===== 真·暗色模式 (html.dark) 下的侧边栏对齐 =====
+ * 问题：bg-sidebar / bg-header 在 theme.css 中映射为 --ant-color-bg-container，
+ * 但 antd darkAlgorithm 生成的容器背景是中性深灰(#141414附近)，
+ * 而 .ant-menu-dark { background: hsl(var(--menu)) } 用的是自定义暗蓝色调
+ * (--sidebar: 222.34deg 10.43% 12.27%)，导致侧边栏容器与菜单之间出现色差。
+ * 这里在 sidebar/header 的 .dark 作用域下，将 antd 容器色桥接到自定义色调，
+ * 同时让菜单 submenu/popup 背景也统一切换，消除割裂感。 */
+html.dark .dark {
+  --ant-color-bg-layout: hsl(var(--sidebar-deep));
+
+  /* 暗色菜单: 一级/二级背景统一用侧边栏色，hover/选中微提亮，不加深 */
+  --ant-menu-dark-item-bg: hsl(var(--sidebar)) !important;
+  --ant-menu-dark-sub-menu-item-bg: hsl(var(--sidebar)) !important;
+  --ant-menu-dark-item-hover-bg: hsl(var(--heavy)) !important;
+  --ant-menu-dark-item-selected-bg: hsl(var(--heavy)) !important;
+  --ant-menu-dark-item-selected-color: #fff !important;
+  --ant-menu-dark-popup-bg: hsl(var(--sidebar)) !important;
+  --ant-menu-dark-group-title-color: hsl(var(--foreground) / 45%) !important;
+
+  /* 直接覆盖 antd CSS-in-JS 生成的元素级 background（再补一刀） */
+  .ant-menu-sub {
+    background: hsl(var(--sidebar)) !important;
+  }
+}
+
+/* 深色侧边栏(semiDarkSidebar):浅色主题下侧边栏单独使用深色。
+ * 此时菜单走 antd theme="dark"，但 ConfigProvider 仍为 lightAlgorithm，
+ * antd 的 CSS-in-JS 可能不生成暗色菜单样式，导致菜单项仍为浅色。
+ * 这里用 !important + 元素级规则强行覆盖，确保暗色菜单正确渲染。
+ * 色值来自 antd CLI / antdv-next menu token：
+ *   darkItemBg/darkPopupBg = #001529
+ *   darkSubMenuItemBg      = #000c17（深一层，用于 mixed 模式 bg-sidebar-deep）
+ *   hover/selected: #002140（antd 暗色菜单悬停色）
+ * 真·暗色模式(html.dark)不命中此规则，侧边栏仍与整体保持一致。 */
+html:not(.dark) .dark {
+  /* 容器：bg-sidebar / bg-sidebar-deep 内联消费 antd 表面色 */
+  --ant-color-bg-container: #001529 !important;
+  --ant-color-bg-layout: #000c17 !important;
+
+  /* 深底之上的前景/填充改用 antd 暗色取值 */
+  --ant-color-text: rgb(255 255 255 / 85%) !important;
+  --ant-color-fill-tertiary: rgb(255 255 255 / 8%) !important;
+  --ant-color-fill-secondary: rgb(255 255 255 / 12%) !important;
+
+  /* 边框 */
+  --ant-color-border: rgb(255 255 255 / 15%) !important;
+
+  /* 菜单根背景桥接 */
+  --sidebar: 209 100% 8% !important;
+  --sidebar-deep: 209 100% 4.5% !important;
+  /* --menu 继承 var(--sidebar)，自动对齐 */
+
+  /* === 双列第二列(extra panel) 强制暗色 ===
+   * 仅限 .sidebar-extra-panel 内，不影响垂直布局原生 antd 暗色菜单 */
+  .sidebar-extra-panel .ant-menu {
+    background: #001529 !important;
+  }
+  .sidebar-extra-panel .ant-menu-item {
+    background: #001529 !important;
+    color: rgb(255 255 255 / 85%) !important;
+  }
+  .sidebar-extra-panel .ant-menu-item:hover {
+    background: rgb(255 255 255 / 8%) !important;
+    color: #fff !important;
+  }
+  .sidebar-extra-panel .ant-menu-item-selected {
+    background: var(--ant-color-primary) !important;
+    color: #fff !important;
+  }
+  .sidebar-extra-panel .ant-menu-submenu-title {
+    background: #001529 !important;
+    color: rgb(255 255 255 / 85%) !important;
+  }
+  .sidebar-extra-panel .ant-menu-submenu-title:hover {
+    background: rgb(255 255 255 / 8%) !important;
+    color: #fff !important;
+  }
+  .sidebar-extra-panel .ant-menu-sub {
+    background: #001529 !important;
+  }
+}

@@ -1,0 +1,17 @@
+<script setup lang="ts">
+import { useRoute } from 'vue-router';
+
+import { JsonPreview, Page } from '@/components';
+
+const route = useRoute();
+const query = route.query;
+</script>
+
+<template>
+  <Page>
+    <div class="bg-card rounded-lg p-4">
+      <span>当前参数:</span>
+      <JsonPreview :data="query" />
+    </div>
+  </Page>
+</template>

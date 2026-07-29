@@ -1,0 +1,145 @@
+@reference "tailwindcss";
+
+/* antdv-next 组件库的一些样式重置 */
+
+body {
+  /**
+   * 全局启用 抗锯齿字体
+   * @see https://developer.mozilla.org/zh-CN/docs/Web/CSS/font-smooth
+   */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.ant-app {
+  width: 100%;
+  height: 100%;
+  overscroll-behavior: none;
+  color: inherit;
+}
+
+.ant-message-notice-content,
+.ant-notification-notice {
+  &:is(.dark *) {
+    border-color: color-mix(in srgb, var(--ant-color-border) 60%, transparent);
+    border-width: 1px;
+  }
+}
+
+/** note: 表格搜索表单底层已经使用antdv-next的Form 这里不需要做对边框颜色的兼容了  */
+
+/**
+ * 表格搜索表单：清除 FormItem 默认下 margin，行间距改由容器 grid gap 提供，
+ * 否则最后一行会多出拖尾 margin，导致搜索区展开/收起时卡片底部留白不一致。
+ * 覆写的是 antd 的 token 变量(其内部为 margin-bottom: var(--ant-form-item-margin-bottom))，
+ * 改数据源而非最终属性，故无需 !important。
+ * 若某表单需校验信息占位，单独给该实例覆盖此变量即可。
+ */
+.table-search-grid .ant-form-item {
+  --ant-form-item-margin-bottom: 0px;
+}
+
+/* 搜索、重置与展开/收起操作固定在最后一列；列宽不足时由按钮组在列内换行。 */
+.table-search-grid > :last-child {
+  grid-column: -2 / -1;
+  min-width: 0;
+}
+
+/** 前后置小圆点样式 */
+.dot-before-common {
+  @apply before:relative before:top-[-2px] before:mr-[5px] before:inline-block before:size-[6px] before:rounded-full before:content-[''];
+}
+
+.dot-before-red {
+  @apply before:relative before:top-[-2px] before:mr-[5px] before:inline-block before:size-[6px] before:rounded-full before:bg-red-500 before:content-[''];
+}
+
+.dot-before-green {
+  @apply before:relative before:top-[-2px] before:mr-[5px] before:inline-block before:size-[6px] before:rounded-full before:bg-green-500 before:content-[''];
+}
+
+/* 菜单样式覆盖 */
+.ant-menu {
+  /* 基础变量 */
+  &.menu-rounded {
+    --ant-menu-item-margin-inline: 8px;
+    --ant-menu-item-border-radius: 6px;
+  }
+
+  /* collapseShowTitle: 折叠时显示标题在图标下方 */
+  &.collapse-show-title.ant-menu-inline-collapsed {
+    .ant-menu-item {
+      flex-direction: column;
+      height: auto;
+      padding: 12px 0 !important;
+    }
+  }
+
+  /* 折叠态 hover 弹出的 popup 子菜单：被 teleport 到 body，
+   * 在半深色侧边栏(semiDarkSidebar)下脱离 .dark 作用域，
+   * --menu 回退为 :root 浅色值导致 popup 背景发白、与深色侧边栏割裂。
+   * 这里恢复 antd 默认的 popup 专用背景色（darkPopupBg / popupBg），
+   * 容器保持透明、内部菜单用对应主题色，避免左侧露出白色。 */
+  &.ant-menu-submenu-popup.ant-menu-dark,
+  &.ant-menu-popup.ant-menu-dark {
+    background: transparent;
+
+    .ant-menu {
+      background-color: var(--ant-menu-dark-popup-bg, #001529);
+    }
+  }
+
+  &.ant-menu-submenu-popup.ant-menu-light,
+  &.ant-menu-popup.ant-menu-light {
+    background: transparent;
+
+    .ant-menu {
+      background-color: var(--ant-menu-popup-bg);
+    }
+  }
+
+  /* 去掉 inline/vertical 菜单根自带的右边框（antd 默认 border-inline-end: 1px）
+   * 侧边栏右侧的边框由 layout-sidebar 的全高容器统一绘制，
+   * 否则两条会叠加成 2px，且菜单自带的这条到不了头部/底部。 */
+  &.ant-menu-root.ant-menu-inline,
+  &.ant-menu-root.ant-menu-vertical {
+    border-inline-end: 0;
+  }
+
+  /* 水平模式 */
+  &.ant-menu-horizontal {
+    height: var(--height-horizontal-height, 52px);
+    background: transparent;
+
+    &.ant-menu-dark,
+    &.ant-menu-light {
+      background: transparent;
+    }
+  }
+}
+
+/* dark主题下 + 开启深色侧边栏 需要更换为黑色而非原本的蓝色 */
+html.dark .ant-menu.ant-menu-dark {
+  background: var(--ant-color-bg-container);
+}
+
+/* 折叠状态下菜单填满侧边栏宽度
+ * antd 默认将折叠菜单写死为 80px（collapsedWidth = controlHeightLG * 2），
+ * 与自定义侧边栏折叠宽度（默认 60px）不一致，会导致菜单溢出，
+ * 且图标居中依赖 paddingInline: calc(50% - ...) 是按 80px 计算的，
+ * 在更窄的侧边栏里就会偏移。改为 100% 跟随侧边栏，图标即可正确居中。 */
+.ant-menu-inline-collapsed {
+  width: 100%;
+
+  /* item / submenu-title 图标居中 */
+  .ant-menu-item-icon {
+    margin-right: 0;
+  }
+}
+
+/* 一些重置属性 */
+html {
+  .ant-drawer .ant-drawer-body {
+    --ant-padding-lg: 12px;
+  }
+}

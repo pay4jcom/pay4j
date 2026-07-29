@@ -1,0 +1,68 @@
+<script setup lang="ts">
+import type { AuthApi } from '@/api';
+
+import { onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+
+import { authCallback } from '@/api';
+import { LOGIN_PATH } from '@/constants';
+import { preferences } from '@/core/preferences';
+import { useAccessStore, useAuthStore } from '@/stores';
+import { cn } from '@/utils';
+import { Spin } from 'antdv-next';
+
+import { accountBindList } from '../oauth-common';
+
+const route = useRoute();
+
+const code = route.query.code as string;
+const state = route.query.state as string;
+const source = route.query.source as string;
+
+const accessStore = useAccessStore();
+const authStore = useAuthStore();
+
+const router = useRouter();
+onMounted(async () => {
+  try {
+    // 已经实现的平台
+    const currentClient = accountBindList.find(
+      (item) => item.source === source,
+    );
+    if (!currentClient) {
+      window.message.error({ content: `未找到${source}平台` });
+      return;
+    }
+    const data: AuthApi.OAuthLoginParams = {
+      grantType: 'social',
+      socialCode: code,
+      socialState: state,
+      source,
+    };
+    // 没有token为登录 有token是授权
+    if (accessStore.accessToken) {
+      await authCallback(data);
+      window.message.success(`${source}授权成功`);
+      setTimeout(() => {
+        router.push(preferences.app.defaultHomePath);
+      }, 1500);
+    } else {
+      // 这里内部已经做了跳转到首页的操作
+      await authStore.authLogin(data as any);
+      window.message.success(`${source}登录成功`);
+    }
+  } catch (error) {
+    console.error(error);
+    // 500 你还没有绑定第三方账号，绑定后才可以登录！
+    setTimeout(() => {
+      router.push(LOGIN_PATH);
+    }, 1500);
+  }
+});
+</script>
+
+<template>
+  <div :class="cn('flex items-center justify-center', 'h-screen w-screen')">
+    <Spin size="large" />
+  </div>
+</template>
