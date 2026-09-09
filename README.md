@@ -19,7 +19,7 @@
 
 > 系统演示: [传送门](https://pay4j.com/#/common/demo_system)
 
-> 官方前端项目地址: [gitee](https://gitee.com/pay4j/pay4j-ui) - [github](https://github.com/pay4jcom/pay4j-ui) <br>
+> 官方前端项目地址: [gitee](https://gitee.com/pay4j) - [github](https://github.com/pay4jcom) <br>
 
 > 文档地址: [pay4j-doc](https://pay4j.com)
 
